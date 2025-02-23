@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me Perdoa?</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #ff69b4, #ff1493);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            margin: 0;
+        }
+        .container {
+            position: absolute;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .styled-button {
+            background: linear-gradient(45deg, #ff4081, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        .styled-button:hover {
+            background: linear-gradient(45deg, #e91e63, #d81b60);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <script>
+        let scene, camera, renderer, heart;
+
+        function showHeart() {
+            document.body.style.background = "radial-gradient(circle, #ff69b4, #ff1493)";
+            document.querySelector('.container').style.display = 'none';
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const shape = new THREE.Shape();
+            shape.moveTo(0, 0.3);
+            shape.bezierCurveTo(0.5, 0.9, 1, 0.3, 0, -0.3);
+            shape.bezierCurveTo(-1, 0.3, -0.5, 0.9, 0, 0.3);
+
+            const geometry = new THREE.ExtrudeGeometry(shape, { depth: 0.2, bevelEnabled: true, bevelSize: 0.05, bevelThickness: 0.05 });
+            const material = new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff3333, metalness: 0.5, roughness: 0.3 });
+            heart = new THREE.Mesh(geometry, material);
+            scene.add(heart);
+
+            const light = new THREE.PointLight(0xffffff, 1, 10);
+            light.position.set(2, 2, 5);
+            scene.add(light);
+
+            camera.position.z = 2;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                heart.rotation.y += 0.01;
+                heart.rotation.x += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        function showMessage() {
+            showHeart();
+            setTimeout(() => {
+                window.location.href = "https://open.spotify.com/intl-pt/album/6UsutqrIyl5NVGoP4i4hozl";
+            }, 2000);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Me Perdoa?</h1>
+        <p>Eu sinto muito pelas nossas brigas. Você é a pessoa mais importante da minha vida e eu não quero te perder. 💕</p>
+        <button class="styled-button" onclick="showMessage()">Clique se me perdoa</button>
+    </div>
+</body>
+</html>
